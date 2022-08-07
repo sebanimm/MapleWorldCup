@@ -5,6 +5,20 @@
     font-style: normal;
 }
 
+@font-face {
+    font-family: 'yg-jalnan';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_four@1.2/JalnanOTF00.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'NEXON Lv1 Gothic OTF';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_20-04@2.1/NEXON Lv1 Gothic OTF.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
 * {
     margin: 0;
     padding: 0;
@@ -12,7 +26,14 @@
 
 h2 {
     text-align: center;
-    padding: 20px;
+    padding: 28px;
+    font-family: 'yg-jalnan';
+    font-size: 44px;
+}
+
+p {
+    font-family: 'NEXON Lv1 Gothic OTF';
+    font-size: 22px;
 }
 
 .start {
@@ -29,7 +50,7 @@ h2 {
     padding: 3vh 0;
 }
 
-.title > p {
+.title > h2 {
     display: block;
     text-align: center;
     margin: auto;
@@ -48,9 +69,10 @@ h2 {
 
 .modal {
     background-color: white;
-    width: 450px;
-    height: 330px;
+    width: 650px;
+    height: 301px;
     margin: 50px auto;
+    border-radius: 10px;
 }
 
 .modal > p {
@@ -144,4 +166,9 @@ h2 {
     margin: 0 auto;
     display: flex;
     justify-content: space-around;
+}
+
+#description {
+    margin-top: 42px;
+    margin-bottom: 16px;
 }
