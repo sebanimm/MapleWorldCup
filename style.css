@@ -39,25 +39,41 @@ p {
 .start {
     transform: none;
     transition: none;
-    height: 30px;
-    width: 60px;
-    margin: 3px 0;
+    height: 36px;
+    width: 100px;
+    margin: 0;
+    background: #2f3640;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-family: 'GangwonEdu_OTFBoldA';
+    font-size: 18px;
+    padding-top: 2.8px;
+    cursor: pointer;
+}
+
+.start:hover {
+    transform: scale(1.1);
 }
 
 .title {
     background-color: black;
     color: white;
-    padding: 3vh 0;
+    height: 12vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .title > h2 {
     display: block;
     text-align: center;
-    margin: auto;
     font-size: 25px;
+    padding: 0;
+    padding-bottom: 0.7vh;
 }
 
-.overlay {
+#overlay {
     position: fixed;
     opacity: 1;
     top: 0;
@@ -124,7 +140,7 @@ p {
 .select-box .options-container.active {
     max-height: 240px;
     opacity: 1;
-    /* overflow-y: scroll; */
+    overflow-y: scroll;
 }
 
 .select-box .options-container.active+.selected::after {
@@ -162,13 +178,31 @@ p {
     display: none;
 }
 
+.fade-out {
+    z-index: -1;
+}
+
 #modal-input {
     margin: 0 auto;
     display: flex;
-    justify-content: space-around;
+    justify-content: space-evenly;
 }
 
 #description {
     margin-top: 42px;
     margin-bottom: 16px;
+}
+
+.img {
+    width: 50%;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center center;
+}
+
+#content {
+    height: 88vh;
+    display: flex;
+    flex-wrap: wrap;
+    background-color: rgb(34, 34, 36);
 }
