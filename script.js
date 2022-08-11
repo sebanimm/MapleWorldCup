@@ -19,7 +19,7 @@ function getRound(category) {
   description.innerText = `64명의 후보 중 무작위 ${round}명이 대결합니다.`;
 }
 
-let usedImages = [];
+const usedImages = [];
 const imgName = [
   "윈드브레이커",
   "스우",
@@ -87,38 +87,130 @@ const imgName = [
   "와일드헌터",
 ];
 
+const leftImg = document.querySelector("#left > .image");
+const rightImg = document.querySelector("#right > .image");
+const leftImgName = document.querySelector("#left > .name");
+const rightImgName = document.querySelector("#right > .name");
+const progress = document.querySelector(".title > h2 > p");
 const numOfName = imgName.length;
-console.log(numOfName);
+
 function randomImage() {
-  let randomNumber1 = Math.floor(Math.random() * numOfName);
-  let randomNumber2 = Math.floor(Math.random() * numOfName);
-  const leftImage = document.querySelector("#left > .image");
-  const rightImage = document.querySelector("#right > .image");
-  const leftImageName = document.querySelector("#left > .name");
-  const rightImageName = document.querySelector("#right > .name");
-  const versus = document.querySelector("#versus");
+  checkProgress();
+  let leftImgNumber = Math.floor(Math.random() * numOfName);
+  let rightImgNumber = Math.floor(Math.random() * numOfName);
 
   while (1) {
-    if (randomNumber1 === randomNumber2) {
-      randomNumber2 = Math.floor(Math.random() * numOfName);
+    for (let j = 0; j < currentRound; j++) {
+      for (let i = 0; i < currentRound; ) {
+        if (leftImgNumber === usedImages[i]) {
+          leftImgNumber = Math.floor(Math.random() * numOfName);
+        } else if (rightImgNumber === usedImages[i]) {
+          rightImgNumber = Math.floor(Math.random() * numOfName);
+        } else {
+          i++;
+        }
+      }
+    }
+    if (leftImgNumber === rightImgNumber) {
+      rightImgNumber = Math.floor(Math.random() * numOfName);
     } else {
       break;
     }
   }
 
-  versus.classList.remove("hidden");
-  leftImage.style.backgroundImage = `url(images/${randomNumber1}.png)`;
-  rightImage.style.backgroundImage = `url(images/${randomNumber2}.png)`;
-  leftImageName.innerText = `${imgName[randomNumber1]}`;
-  rightImageName.innerText = `${imgName[randomNumber2]}`;
+  usedImageLeft = leftImgNumber;
+  usedImageRight = rightImgNumber;
+
+  leftImg.style.backgroundImage = `url(images/${leftImgNumber}.png)`;
+  rightImg.style.backgroundImage = `url(images/${rightImgNumber}.png)`;
+  leftImgName.innerText = `${imgName[leftImgNumber]}`;
+  rightImgName.innerText = `${imgName[rightImgNumber]}`;
+  if (currentRound === 61) {
+    progress.innerText = `결승전`;
+  } else if (currentRound === 62) {
+    winner();
+  } else {
+    progress.innerText = `${selectedRound}강 ${count}/${selectedRound / 2}`;
+  }
+  count += 1;
+}
+
+let selectedRound;
+let count = 1;
+let currentRound = usedImages.length;
+
+function checkProgress() {
+  currentRound = usedImages.length;
+  if (currentRound === 59) {
+    selectedRound = 4;
+    count = 1;
+  } else if (currentRound === 55) {
+    selectedRound = 8;
+    count = 1;
+  } else if (currentRound === 47) {
+    selectedRound = 16;
+    count = 1;
+  } else if (currentRound === 31) {
+    selectedRound = 32;
+    count = 1;
+  } else if (currentRound === 0) {
+    selectedRound = 64;
+  }
+}
+
+let usedImageLeft;
+let usedImageRight;
+
+function chooseLeft() {
+  randomImage();
+  usedImages.push(usedImageLeft);
+}
+
+function chooseRight() {
+  randomImage();
+  usedImages.push(usedImageRight);
+}
+
+const win = document.getElementById("winner");
+const winnerName = document.querySelector("#winner > p");
+let a = [];
+
+function winner() {
+  for (let i = 0; i < numOfName; i++) {
+    for (let j = 0; j < numOfName; j++) {
+      if (usedImages[i] === j) {
+        a[i] = 1;
+      } else {
+        a[i] = 0;
+      }
+    }
+  }
+  for (let i = 0; i < numOfName; i++) {
+    if (a[i] === 0) {
+      console.log(a[i]);
+    }
+  }
+  win.classList.remove("hidden");
+  leftImg.classList.add("hidden");
+  rightImg.classList.add("hidden");
+  leftImgName.classList.add("hidden");
+  rightImgName.classList.add("hidden");
+  versus.classList.add("hidden");
+  win.style.backgroundImage = `url("images/${j}.png")`;
+  winnerName.innerText = `${imgName[j]}`;
 }
 
 const startBtn = document.querySelector(".start");
 const overlay = document.getElementById("overlay");
+const versus = document.querySelector("#versus");
 
 function modalFadeOut() {
   overlay.classList.add("fade-out");
   startBtn.style.cursor = "default";
+  versus.classList.remove("hidden");
+  randomImage();
 }
 
-startBtn.addEventListener("click", modalFadeOut, randomImage);
+startBtn.addEventListener("click", modalFadeOut);
+leftImg.addEventListener("click", chooseLeft);
+rightImg.addEventListener("click", chooseRight);
