@@ -20,7 +20,8 @@ function getRound(category) {
 }
 
 const usedImages = [];
-const imgName = [
+
+const imgInfo = [
   "윈드브레이커",
   "스우",
   "루시드",
@@ -87,74 +88,92 @@ const imgName = [
   "와일드헌터",
 ];
 
-const leftImg = document.querySelector("#left > .image");
 const rightImg = document.querySelector("#right > .image");
-const leftImgName = document.querySelector("#left > .name");
+const leftImg = document.querySelector("#left > .image");
 const rightImgName = document.querySelector("#right > .name");
+const leftImgName = document.querySelector("#left > .name");
 const progress = document.querySelector(".title > h2 > p");
-const numOfName = imgName.length;
 
-function randomImage() {
-  checkProgress();
-  let leftImgNumber = Math.floor(Math.random() * numOfName);
-  let rightImgNumber = Math.floor(Math.random() * numOfName);
+let currentRound;
+let count = 0;
+let currentProgress;
 
-  while (1) {
-    for (let j = 0; j < currentRound; j++) {
-      for (let i = 0; i < currentRound; ) {
-        if (leftImgNumber === usedImages[i]) {
-          leftImgNumber = Math.floor(Math.random() * numOfName);
-        } else if (rightImgNumber === usedImages[i]) {
-          rightImgNumber = Math.floor(Math.random() * numOfName);
-        } else {
-          i++;
-        }
+function checkProgress() {
+  currentProgress = usedImages.length;
+
+  if (currentProgress === 59) {
+    currentRound = 4;
+    count = 0;
+  } else if (currentProgress === 55) {
+    currentRound = 8;
+    count = 0;
+  } else if (currentProgress === 47) {
+    currentRound = 16;
+    count = 0;
+  } else if (currentProgress === 31) {
+    currentRound = 32;
+    count = 0;
+  } else if (currentProgress === 0) {
+    currentRound = 64;
+  }
+
+  count += 1;
+}
+
+function showWinner() {
+  let a;
+  for (let i = 0; i < usedImages.length; i++) {
+    for (let j = 0; j < usedImages.length; j++) {
+      if (usedImages[i] < usedImages[j]) {
+        a = usedImages[i];
+        usedImages[i] = usedImages[j];
+        usedImages[j] = a;
       }
     }
-    if (leftImgNumber === rightImgNumber) {
-      rightImgNumber = Math.floor(Math.random() * numOfName);
+  }
+  console.log(usedImages);
+  for (let i = 0; i < usedImages.length; i++) {
+    for (let j = 0; j < usedImages.length; j++) {}
+  }
+}
+
+function showImages() {
+  checkProgress();
+  const numOfImgs = imgInfo.length;
+  let rightImgNumber = Math.floor(Math.random() * numOfImgs);
+  let leftImageNumber = Math.floor(Math.random() * numOfImgs);
+
+  while (1) {
+    for (let i = 0; i < currentProgress; i++) {
+      if (leftImageNumber === usedImages[i]) {
+        leftImageNumber = Math.floor(Math.random() * numOfImgs);
+      } else if (rightImgNumber === usedImages[i]) {
+        rightImgNumber = Math.floor(Math.random() * numOfImgs);
+      }
+    }
+    if (leftImageNumber === rightImgNumber) {
+      leftImageNumber = Math.floor(Math.random() * numOfImgs);
+      rightImgNumber = Math.floor(Math.random() * numOfImgs);
     } else {
       break;
     }
   }
 
-  usedImageLeft = leftImgNumber;
   usedImageRight = rightImgNumber;
+  usedImageLeft = leftImageNumber;
 
-  leftImg.style.backgroundImage = `url(images/${leftImgNumber}.png)`;
+  leftImg.style.backgroundImage = `url(images/${leftImageNumber}.png)`;
   rightImg.style.backgroundImage = `url(images/${rightImgNumber}.png)`;
-  leftImgName.innerText = `${imgName[leftImgNumber]}`;
-  rightImgName.innerText = `${imgName[rightImgNumber]}`;
-  if (currentRound === 61) {
+  leftImgName.innerText = `${imgInfo[leftImageNumber]}`;
+  rightImgName.innerText = `${imgInfo[rightImgNumber]}`;
+
+  if (currentProgress === 61) {
     progress.innerText = `결승전`;
-  } else if (currentRound === 62) {
-    winner();
+  } else if (currentProgress === 62) {
+    progress.innerText = `우승`;
+    showWinner();
   } else {
-    progress.innerText = `${selectedRound}강 ${count}/${selectedRound / 2}`;
-  }
-  count += 1;
-}
-
-let selectedRound;
-let count = 1;
-let currentRound = usedImages.length;
-
-function checkProgress() {
-  currentRound = usedImages.length;
-  if (currentRound === 59) {
-    selectedRound = 4;
-    count = 1;
-  } else if (currentRound === 55) {
-    selectedRound = 8;
-    count = 1;
-  } else if (currentRound === 47) {
-    selectedRound = 16;
-    count = 1;
-  } else if (currentRound === 31) {
-    selectedRound = 32;
-    count = 1;
-  } else if (currentRound === 0) {
-    selectedRound = 64;
+    progress.innerText = `${currentRound}강중 ${count}/${currentRound / 2}`;
   }
 }
 
@@ -162,42 +181,13 @@ let usedImageLeft;
 let usedImageRight;
 
 function chooseLeft() {
-  randomImage();
+  showImages();
   usedImages.push(usedImageLeft);
 }
 
 function chooseRight() {
-  randomImage();
+  showImages();
   usedImages.push(usedImageRight);
-}
-
-const win = document.getElementById("winner");
-const winnerName = document.querySelector("#winner > p");
-let a = [];
-
-function winner() {
-  for (let i = 0; i < numOfName; i++) {
-    for (let j = 0; j < numOfName; j++) {
-      if (usedImages[i] === j) {
-        a[i] = 1;
-      } else {
-        a[i] = 0;
-      }
-    }
-  }
-  for (let i = 0; i < numOfName; i++) {
-    if (a[i] === 0) {
-      console.log(a[i]);
-    }
-  }
-  win.classList.remove("hidden");
-  leftImg.classList.add("hidden");
-  rightImg.classList.add("hidden");
-  leftImgName.classList.add("hidden");
-  rightImgName.classList.add("hidden");
-  versus.classList.add("hidden");
-  win.style.backgroundImage = `url("images/${j}.png")`;
-  winnerName.innerText = `${imgName[j]}`;
 }
 
 const startBtn = document.querySelector(".start");
@@ -208,7 +198,7 @@ function modalFadeOut() {
   overlay.classList.add("fade-out");
   startBtn.style.cursor = "default";
   versus.classList.remove("hidden");
-  randomImage();
+  showImages();
 }
 
 startBtn.addEventListener("click", modalFadeOut);
