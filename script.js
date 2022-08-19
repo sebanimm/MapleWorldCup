@@ -88,6 +88,12 @@ const imgInfo = [
   "와일드헌터",
 ];
 
+const imgNum = [
+  0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21,
+  22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40,
+  41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59,
+  60, 61, 62, 63,
+];
 const rightImg = document.querySelector("#right > .image");
 const leftImg = document.querySelector("#left > .image");
 const rightImgName = document.querySelector("#right > .name");
@@ -136,36 +142,27 @@ function showWinner() {
     for (let j = 0; j < usedImages.length; j++) {}
   }
 }
+function shuffle(imgInfo) {
+  for (let index = imgInfo.length - 1; index > 0; index--) {
+    const randomPosition = Math.floor(Math.random() * (index + 1));
 
+    const temporary = imgInfo[index];
+    imgInfo[index] = imgInfo[randomPosition];
+    imgInfo[randomPosition] = temporary;
+  }
+  console.log(imgInfo);
+}
+shuffle(imgNum);
+let i = 0;
 function showImages() {
   checkProgress();
-  const numOfImgs = imgInfo.length;
-  let rightImgNumber = Math.floor(Math.random() * numOfImgs);
-  let leftImageNumber = Math.floor(Math.random() * numOfImgs);
-
-  while (1) {
-    for (let i = 0; i < currentProgress; i++) {
-      if (leftImageNumber === usedImages[i]) {
-        leftImageNumber = Math.floor(Math.random() * numOfImgs);
-      } else if (rightImgNumber === usedImages[i]) {
-        rightImgNumber = Math.floor(Math.random() * numOfImgs);
-      }
-    }
-    if (leftImageNumber === rightImgNumber) {
-      leftImageNumber = Math.floor(Math.random() * numOfImgs);
-      rightImgNumber = Math.floor(Math.random() * numOfImgs);
-    } else {
-      break;
-    }
-  }
-
-  usedImageRight = rightImgNumber;
-  usedImageLeft = leftImageNumber;
+  leftImageNumber = imgNum[i];
+  rightImageNumber = imgNum[i + 1];
 
   leftImg.style.backgroundImage = `url(images/${leftImageNumber}.png)`;
-  rightImg.style.backgroundImage = `url(images/${rightImgNumber}.png)`;
+  rightImg.style.backgroundImage = `url(images/${rightImageNumber}.png)`;
   leftImgName.innerText = `${imgInfo[leftImageNumber]}`;
-  rightImgName.innerText = `${imgInfo[rightImgNumber]}`;
+  rightImgName.innerText = `${imgInfo[rightImageNumber]}`;
 
   if (currentProgress === 61) {
     progress.innerText = `결승전`;
@@ -177,17 +174,19 @@ function showImages() {
   }
 }
 
-let usedImageLeft;
-let usedImageRight;
+let leftImageNumber;
+let rightImageNumber;
 
 function chooseLeft() {
+  imgNum.splice(i, 1);
+  i++;
   showImages();
-  usedImages.push(usedImageLeft);
 }
 
 function chooseRight() {
+  imgNum.splice(i + 1, 1);
+  i++;
   showImages();
-  usedImages.push(usedImageRight);
 }
 
 const startBtn = document.querySelector(".start");
