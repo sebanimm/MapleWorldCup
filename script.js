@@ -19,8 +19,6 @@ function getRound(category) {
   description.innerText = `64명의 후보 중 무작위 ${round}명이 대결합니다.`;
 }
 
-const usedImages = [];
-
 const imgInfo = [
   "윈드브레이커",
   "스우",
@@ -94,6 +92,7 @@ const imgNum = [
   41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59,
   60, 61, 62, 63,
 ];
+
 const rightImg = document.querySelector("#right > .image");
 const leftImg = document.querySelector("#left > .image");
 const rightImgName = document.querySelector("#right > .name");
@@ -105,43 +104,45 @@ let count = 0;
 let currentProgress;
 
 function checkProgress() {
-  currentProgress = usedImages.length;
+  currentProgress = imgNum.length;
 
-  if (currentProgress === 59) {
+  if (currentProgress === 1) {
+    i = 0;
+    console.log(imgNum);
+  } else if (currentProgress === 2) {
+    i = 0;
+    console.log(imgNum);
+  } else if (currentProgress === 4) {
     currentRound = 4;
     count = 0;
-  } else if (currentProgress === 55) {
+    i = 0;
+    console.log(imgNum);
+  } else if (currentProgress === 8) {
     currentRound = 8;
     count = 0;
-  } else if (currentProgress === 47) {
+    i = 0;
+    console.log(imgNum);
+  } else if (currentProgress === 16) {
     currentRound = 16;
     count = 0;
-  } else if (currentProgress === 31) {
+    i = 0;
+    console.log(imgNum);
+  } else if (currentProgress === 32) {
     currentRound = 32;
     count = 0;
-  } else if (currentProgress === 0) {
+    i = 0;
+    console.log(imgNum);
+  } else if (currentProgress === 64) {
     currentRound = 64;
+    i = 0;
+    console.log(imgNum);
   }
 
   count += 1;
 }
 
-function showWinner() {
-  let a;
-  for (let i = 0; i < usedImages.length; i++) {
-    for (let j = 0; j < usedImages.length; j++) {
-      if (usedImages[i] < usedImages[j]) {
-        a = usedImages[i];
-        usedImages[i] = usedImages[j];
-        usedImages[j] = a;
-      }
-    }
-  }
-  console.log(usedImages);
-  for (let i = 0; i < usedImages.length; i++) {
-    for (let j = 0; j < usedImages.length; j++) {}
-  }
-}
+function showWinner() {}
+
 function shuffle(imgInfo) {
   for (let index = imgInfo.length - 1; index > 0; index--) {
     const randomPosition = Math.floor(Math.random() * (index + 1));
@@ -150,23 +151,24 @@ function shuffle(imgInfo) {
     imgInfo[index] = imgInfo[randomPosition];
     imgInfo[randomPosition] = temporary;
   }
-  console.log(imgInfo);
 }
+
 shuffle(imgNum);
-let i = 0;
+let i;
+
 function showImages() {
   checkProgress();
-  leftImageNumber = imgNum[i];
-  rightImageNumber = imgNum[i + 1];
+  leftImgNumber = imgNum[i];
+  rightImgNumber = imgNum[i + 1];
 
-  leftImg.style.backgroundImage = `url(images/${leftImageNumber}.png)`;
-  rightImg.style.backgroundImage = `url(images/${rightImageNumber}.png)`;
-  leftImgName.innerText = `${imgInfo[leftImageNumber]}`;
-  rightImgName.innerText = `${imgInfo[rightImageNumber]}`;
+  leftImg.style.backgroundImage = `url(images/${leftImgNumber}.png)`;
+  rightImg.style.backgroundImage = `url(images/${rightImgNumber}.png)`;
+  leftImgName.innerText = `${leftImgNumber}`;
+  rightImgName.innerText = `${rightImgNumber}`;
 
-  if (currentProgress === 61) {
+  if (currentProgress === 2) {
     progress.innerText = `결승전`;
-  } else if (currentProgress === 62) {
+  } else if (currentProgress === 1) {
     progress.innerText = `우승`;
     showWinner();
   } else {
@@ -174,8 +176,8 @@ function showImages() {
   }
 }
 
-let leftImageNumber;
-let rightImageNumber;
+let leftImgNumber;
+let rightImgNumber;
 
 function chooseLeft() {
   imgNum.splice(i, 1);
@@ -184,6 +186,7 @@ function chooseLeft() {
 }
 
 function chooseRight() {
+  console.log(imgNum[i + 1]);
   imgNum.splice(i + 1, 1);
   i++;
   showImages();
