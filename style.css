@@ -278,12 +278,19 @@ p {
 }
 
 #winner {
-  position: absolute;
-  width: 60%;
-  height: 60%;
-  margin: 10vh 20vw;
+  width: 90%;
+  height: 90%;
+  margin: 0 auto;
+  padding: 2vh 0;
   background-repeat: no-repeat;
   background-size: contain;
   background-position: center center;
-  z-index: 2;
+}
+
+#winner > p {
+  margin-top: 5vh;
+  font-size: 32px;
+  position: absolute;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }

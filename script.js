@@ -14,10 +14,14 @@ optionsList.forEach((o) => {
   });
 });
 
+let round = 64;
+
 function getRound(category) {
-  const round = category.getAttribute("id");
+  round = category.getAttribute("id");
   description.innerText = `64명의 후보 중 무작위 ${round}명이 대결합니다.`;
 }
+
+let chosenRound;
 
 const imgInfo = [
   "윈드브레이커",
@@ -108,45 +112,58 @@ function checkProgress() {
 
   if (currentProgress === 1) {
     i = 0;
-    console.log(imgNum);
+    shuffle(imgNum);
   } else if (currentProgress === 2) {
     i = 0;
-    console.log(imgNum);
+    shuffle(imgNum);
   } else if (currentProgress === 4) {
     currentRound = 4;
     count = 0;
     i = 0;
-    console.log(imgNum);
+    shuffle(imgNum);
   } else if (currentProgress === 8) {
     currentRound = 8;
     count = 0;
     i = 0;
-    console.log(imgNum);
+    shuffle(imgNum);
   } else if (currentProgress === 16) {
     currentRound = 16;
     count = 0;
     i = 0;
-    console.log(imgNum);
+    shuffle(imgNum);
   } else if (currentProgress === 32) {
     currentRound = 32;
     count = 0;
     i = 0;
-    console.log(imgNum);
+    shuffle(imgNum);
   } else if (currentProgress === 64) {
     currentRound = 64;
     i = 0;
-    console.log(imgNum);
+    shuffle(imgNum);
   }
 
   count += 1;
 }
 
-function showWinner() {}
+const winner = document.getElementById("winner");
+const winnerImg = document.querySelector("#winner > div");
+const winnerName = document.querySelector("#winner > p");
+
+function showWinner() {
+  versus.classList.add("hidden");
+  rightImg.classList.add("hidden");
+  leftImg.classList.add("hidden");
+  rightImgName.classList.add("hidden");
+  leftImgName.classList.add("hidden");
+  winner.classList.remove("hidden");
+  winnerImg.style.backgroundImage = `url(images/${imgNum[0]}.png)`;
+  winnerName.classList.remove("hidden");
+  winnerName.innerText = `승자 : ${imgInfo[imgNum[0]]}`;
+}
 
 function shuffle(imgInfo) {
   for (let index = imgInfo.length - 1; index > 0; index--) {
     const randomPosition = Math.floor(Math.random() * (index + 1));
-
     const temporary = imgInfo[index];
     imgInfo[index] = imgInfo[randomPosition];
     imgInfo[randomPosition] = temporary;
@@ -163,8 +180,8 @@ function showImages() {
 
   leftImg.style.backgroundImage = `url(images/${leftImgNumber}.png)`;
   rightImg.style.backgroundImage = `url(images/${rightImgNumber}.png)`;
-  leftImgName.innerText = `${leftImgNumber}`;
-  rightImgName.innerText = `${rightImgNumber}`;
+  leftImgName.innerText = `${imgInfo[leftImgNumber]}`;
+  rightImgName.innerText = `${imgInfo[rightImgNumber]}`;
 
   if (currentProgress === 2) {
     progress.innerText = `결승전`;
@@ -180,14 +197,13 @@ let leftImgNumber;
 let rightImgNumber;
 
 function chooseLeft() {
-  imgNum.splice(i, 1);
+  imgNum.splice(i + 1, 1);
   i++;
   showImages();
 }
 
 function chooseRight() {
-  console.log(imgNum[i + 1]);
-  imgNum.splice(i + 1, 1);
+  imgNum.splice(i, 1);
   i++;
   showImages();
 }
@@ -200,6 +216,7 @@ function modalFadeOut() {
   overlay.classList.add("fade-out");
   startBtn.style.cursor = "default";
   versus.classList.remove("hidden");
+  imgNum.splice(`${round}`, 63);
   showImages();
 }
 
